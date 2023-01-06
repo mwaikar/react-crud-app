@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import EmployeeTable from "./components/EmployeeTable";
+import { useEffect, useState } from "react";
 
-function App() {
+export default function App() {
+  const [employeeData, setEmployeeData] = useState([]);
+  const fetchData = () => {
+    fetch("https://hub.dummyapis.com/employee?noofRecords=6&idStarts=1001")
+      .then(res => res.json())
+      .then((myJson) => {
+        console.log(myJson)
+        setEmployeeData(myJson)
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {employeeData && employeeData.length > 0 && <EmployeeTable employeeData={employeeData} />}
     </div>
   );
 }
-
-export default App;
